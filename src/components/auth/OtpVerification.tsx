@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -27,7 +26,6 @@ const OtpVerification = ({
   const [countdown, setCountdown] = useState(60);
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = countdown > 0 && setInterval(() => setCountdown(countdown - 1), 1000);
@@ -46,24 +44,14 @@ const OtpVerification = ({
 
     setIsVerifying(true);
     try {
-      // In a real implementation with Supabase, this would verify the OTP
-      // For now, we'll simulate a successful verification
+      // For demo purposes - any 6-digit OTP works
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // This is where we would call Supabase auth.verifyOTP()
-      if (otp === '123456') { // For demo purposes
-        toast({
-          title: "Phone verified successfully",
-          description: "Your phone number has been verified"
-        });
-        onSuccess();
-      } else {
-        toast({
-          title: "Invalid OTP",
-          description: "The OTP you entered is incorrect",
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: "Phone verified successfully",
+        description: "Your phone number has been verified"
+      });
+      onSuccess();
     } catch (error) {
       toast({
         title: "Verification failed",

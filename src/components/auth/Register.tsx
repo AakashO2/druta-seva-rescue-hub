@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { User, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
 
 interface RegisterProps {
   onSuccess: () => void;
@@ -16,6 +17,7 @@ const Register = ({ onSuccess }: RegisterProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,13 +34,23 @@ const Register = ({ onSuccess }: RegisterProps) => {
     setIsLoading(true);
     
     try {
-      // In a real implementation, this would use supabase.auth.signUp()
-      // For demo purposes, we'll simulate a successful registration
+      // Simulate registration process
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create a mock user (for demo purposes)
+      const mockUser = {
+        id: `user-${Date.now()}`,
+        name: fullName,
+        email: email,
+        phone: phone
+      };
+      
+      // Auto-login the user after successful registration
+      login(mockUser);
       
       toast({
         title: "Registration successful",
-        description: "Your account has been created. Please check your email for verification."
+        description: "Your account has been created and you're now logged in."
       });
       
       // Notify parent component of successful registration

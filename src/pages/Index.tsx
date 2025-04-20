@@ -12,12 +12,14 @@ import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
 import AuthModal from '@/components/auth/AuthModal';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authAction, setAuthAction] = useState<'login' | 'register'>('login');
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     document.title = 'DrutaSeva - Emergency Ambulance Services';
@@ -29,6 +31,10 @@ const Index = () => {
     } else {
       setAuthAction('login');
       setShowAuthModal(true);
+      toast({
+        title: "Authentication Required",
+        description: "Please login or register to book an ambulance."
+      });
     }
   };
 
@@ -44,6 +50,7 @@ const Index = () => {
 
   const handleAuthSuccess = () => {
     setShowAuthModal(false);
+    // Redirect to booking page after successful authentication
     navigate('/book-ambulance');
   };
 

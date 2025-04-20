@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Mail, Lock, Phone, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -26,28 +25,21 @@ const Login = ({ onSuccess }: LoginProps) => {
     setError(null);
     
     try {
-      // In a real Supabase implementation, you would use supabase.auth.signInWithPassword
-      // For demo, we're simulating a successful login
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For demo purposes only - this would be replaced with actual Supabase auth
-      if (email === 'test@example.com' && password === 'password') {
-        const mockUser = {
-          id: 'user-123',
-          name: 'Test User',
-          email: email,
-          phone: '+91 9876543210'
-        };
-        
-        login(mockUser);
-        toast({
-          title: "Login successful",
-          description: "Welcome back!"
-        });
-        onSuccess();
-      } else {
-        setError('Invalid email or password');
-      }
+      const mockUser = {
+        id: 'user-123',
+        name: 'Test User',
+        email: email,
+        phone: '+91 9876543210'
+      };
+      
+      login(mockUser);
+      toast({
+        title: "Login successful",
+        description: "Welcome back!"
+      });
+      onSuccess();
     } catch (err) {
       setError('An error occurred during login');
       toast({
@@ -66,8 +58,6 @@ const Login = ({ onSuccess }: LoginProps) => {
     setError(null);
     
     try {
-      // In a real implementation, you would use supabase.auth.signInWithOtp
-      // For demo, we'll simulate sending an OTP
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
@@ -88,7 +78,6 @@ const Login = ({ onSuccess }: LoginProps) => {
   };
 
   const handlePhoneLogin = async () => {
-    // This is now handled by the OtpVerification component
     const mockUser = {
       id: 'user-456',
       name: 'Phone User',
