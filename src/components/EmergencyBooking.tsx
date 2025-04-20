@@ -1,11 +1,20 @@
 
 import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
-const EmergencyBooking = () => {
+interface EmergencyBookingProps {
+  onAuthRequired: () => void;
+}
+
+const EmergencyBooking = ({ onAuthRequired }: EmergencyBookingProps) => {
+  const { isAuthenticated, user } = useAuth();
+  const { toast } = useToast();
+  
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
+    name: user?.name || '',
+    phone: user?.phone || '',
     location: '',
     serviceType: 'Emergency'
   });
@@ -26,20 +35,37 @@ const EmergencyBooking = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      onAuthRequired();
+      return;
+    }
+    
     setIsSubmitting(true);
     setError(null);
     
     try {
-      // In a real implementation, this would send the data to your backend
-      // For now, we'll simulate a successful submission after a delay
+      // In a real implementation with Supabase, we would insert the booking data
+      // into the database here using supabase.from('bookings').insert([...])
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       console.log('Emergency booking data submitted:', formData);
       setSubmitSuccess(true);
-      // In a real app, we would redirect to the payment page or booking confirmation
+      
+      toast({
+        title: "Emergency request submitted",
+        description: "We've received your emergency ambulance request."
+      });
     } catch (err) {
       setError('An error occurred. Please try again or call our emergency number.');
       console.error('Form submission error:', err);
+      
+      toast({
+        title: "Submission failed",
+        description: "Please try again or call our emergency number directly.",
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }
