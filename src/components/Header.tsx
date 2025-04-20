@@ -1,6 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { PhoneCall } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 interface HeaderProps {
   onLoginClick?: () => void;
@@ -8,6 +9,8 @@ interface HeaderProps {
 }
 
 const Header = ({ onLoginClick, onRegisterClick }: HeaderProps) => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <header className="bg-dark-800 text-white py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
@@ -28,21 +31,40 @@ const Header = ({ onLoginClick, onRegisterClick }: HeaderProps) => {
           <Link to="/contact" className="text-sm font-medium hover:text-druta transition-colors">Contact</Link>
         </nav>
         <div className="flex items-center space-x-4">
-          {onLoginClick && (
-            <button 
-              onClick={onLoginClick}
-              className="text-sm font-medium hover:text-druta transition-colors"
-            >
-              Login
-            </button>
-          )}
-          {onRegisterClick && (
-            <button 
-              onClick={onRegisterClick}
-              className="text-sm font-medium bg-druta text-white px-4 py-1.5 rounded hover:bg-druta-700 transition-colors"
-            >
-              Register
-            </button>
+          {!isAuthenticated ? (
+            <>
+              {onLoginClick && (
+                <button 
+                  onClick={onLoginClick}
+                  className="text-sm font-medium hover:text-druta transition-colors"
+                >
+                  Login
+                </button>
+              )}
+              {onRegisterClick && (
+                <button 
+                  onClick={onRegisterClick}
+                  className="text-sm font-medium bg-druta text-white px-4 py-1.5 rounded hover:bg-druta-700 transition-colors"
+                >
+                  Register
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <Link 
+                to="/my-rescue" 
+                className="text-sm font-medium hover:text-druta transition-colors"
+              >
+                My Bookings
+              </Link>
+              <button 
+                onClick={logout}
+                className="text-sm font-medium hover:text-druta transition-colors"
+              >
+                Logout
+              </button>
+            </>
           )}
           <a 
             href="tel:123-456-7890" 
