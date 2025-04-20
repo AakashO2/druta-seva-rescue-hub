@@ -2,7 +2,12 @@
 import { Link } from 'react-router-dom';
 import { PhoneCall } from 'lucide-react';
 
-const Header = () => {
+interface HeaderProps {
+  onLoginClick?: () => void;
+  onRegisterClick?: () => void;
+}
+
+const Header = ({ onLoginClick, onRegisterClick }: HeaderProps) => {
   return (
     <header className="bg-dark-800 text-white py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
@@ -22,13 +27,31 @@ const Header = () => {
           <Link to="/testimonials" className="text-sm font-medium hover:text-druta transition-colors">Testimonials</Link>
           <Link to="/contact" className="text-sm font-medium hover:text-druta transition-colors">Contact</Link>
         </nav>
-        <a 
-          href="tel:123-456-7890" 
-          className="flex items-center bg-druta text-white px-4 py-1.5 rounded text-sm font-medium"
-        >
-          <PhoneCall className="w-4 h-4 mr-2" />
-          Emergency: 123-456-7890
-        </a>
+        <div className="flex items-center space-x-4">
+          {onLoginClick && (
+            <button 
+              onClick={onLoginClick}
+              className="text-sm font-medium hover:text-druta transition-colors"
+            >
+              Login
+            </button>
+          )}
+          {onRegisterClick && (
+            <button 
+              onClick={onRegisterClick}
+              className="text-sm font-medium bg-druta text-white px-4 py-1.5 rounded hover:bg-druta-700 transition-colors"
+            >
+              Register
+            </button>
+          )}
+          <a 
+            href="tel:123-456-7890" 
+            className="flex items-center bg-druta text-white px-4 py-1.5 rounded text-sm font-medium"
+          >
+            <PhoneCall className="w-4 h-4 mr-2" />
+            Emergency: 123-456-7890
+          </a>
+        </div>
       </div>
     </header>
   );

@@ -2,7 +2,11 @@
 import { Link } from 'react-router-dom';
 import { PhoneCall } from 'lucide-react';
 
-const Hero = () => {
+interface HeroProps {
+  onBookNowClick?: () => void;
+}
+
+const Hero = ({ onBookNowClick }: HeroProps) => {
   return (
     <div className="relative h-[600px] bg-dark-900">
       {/* Background overlay for the image */}
@@ -33,12 +37,21 @@ const Hero = () => {
             <PhoneCall className="w-5 h-5 mr-2" />
             Call Now
           </a>
-          <Link 
-            to="/book-ambulance" 
-            className="flex items-center bg-white text-dark-800 px-6 py-3 rounded-md font-medium"
-          >
-            Book Online
-          </Link>
+          {onBookNowClick ? (
+            <button 
+              onClick={onBookNowClick}
+              className="flex items-center bg-white text-dark-800 px-6 py-3 rounded-md font-medium"
+            >
+              Book Online
+            </button>
+          ) : (
+            <Link 
+              to="/book-ambulance" 
+              className="flex items-center bg-white text-dark-800 px-6 py-3 rounded-md font-medium"
+            >
+              Book Online
+            </Link>
+          )}
         </div>
       </div>
     </div>
